@@ -1,0 +1,1 @@
+The images uploaded are not available in this folder because they were ignored by git inside the '.gitignore' file😊
