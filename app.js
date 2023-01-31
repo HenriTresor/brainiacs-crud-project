@@ -44,12 +44,8 @@ app.get("/", (req, res) => {
   res.render("index.ejs");
 });
 
-app.post("/signup", upload.single("profile_pic"), (req, res,next) => {
-  console.log('image uploaded');
-  next()
-});
 
-app.post("/signup", (req, res) => {
+app.post("/user", (req, res) => {
   console.log(req.body);
 
   let password = req.body.pwd;
@@ -72,9 +68,6 @@ app.post("/signup", (req, res) => {
     (err, result) => {
       if (err) console.log("err found:", err);
       console.log(result[0].image.toString());
-      if (image === result[0].image.toString()) {
-        image = storage.filename
-      }
     }
   );
 
