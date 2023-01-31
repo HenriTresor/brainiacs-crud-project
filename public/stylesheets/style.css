@@ -48,3 +48,8 @@ label[for='pic']{
 input[type='submit']{
   cursor: pointer;
 }
+
+image{
+  width: 100px;
+  border-radius: 50%;
+}

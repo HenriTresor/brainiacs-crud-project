@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,29 +8,32 @@
     <title>user Dashboard</title>
     <link rel="stylesheet" href="stylesheets/style.css">
 </head>
+
 <body>
     <main>
         <h1>Dashboard</h1>
 
-        <img src='<%= image%>' alt="">
-
         <form action="update" method="post">
-        
+
+            <img src='<%= image%>' style="border-radius:50%;text-align: center;" width="100" height="100"
+                alt="profile picture" />
+                <div class="input__container">
+                    <label for="pic">Update your profile picture</label>
+                    <input type="file" name="profile_pic" id="pic">
+                </div>
+
             <div class="input__container">
                 <label for="email">Update your email:</label>
-                <input type="email" name="email" id="email" value='<%= email%>'>
+                <input type="email" name="email" id="email" value='<%= email%>'
+               readonly  style="cursor:not-allowed">
             </div>
             <div class="input__container">
                 <label for="uname">Update your username:</label>
-                <input type="text" name="uname" id="uname"  value='<%= uname%>'>
+                <input type="text" name="uname" id="uname" value='<%= uname%>'>
             </div>
             <div class="input__container">
                 <label for="pwd">Update your password:</label>
-                <input type="password" name="pwd" id="pwd"  value='<%= password%>'>
-            </div>
-            <div class="input__container">
-                <label for="pic">Update your profile picture</label>
-                <input type="file" name="profile_pic" id="pic">
+                <input type="password" name="pwd" id="pwd" value='<%= password%>'>
             </div>
             <div class="input__container">
                 <input type="submit" value="update">
@@ -37,4 +41,5 @@
         </form>
     </main>
 </body>
+
 </html>

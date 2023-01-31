@@ -6,17 +6,17 @@ const { diskStorage } = require("multer");
 
 const storage = diskStorage({
   destination: function (req, file, cb) {
-    cb(null,'public/images/uploads')
+    cb(null, "public/images/uploads");
   },
   filename: function (req, file, cb) {
-    cb(null,originalname)
-  }
-})
+    cb(null, `${file.originalname}`);
+  },
+});
 
-const upload = multer({ storage })
+const upload = multer({ storage });
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 
 // setup mysql server
 
@@ -44,13 +44,14 @@ app.get("/", (req, res) => {
   res.render("index.ejs");
 });
 
+let image;
 
-app.post("/signup", (req, res) => {
+app.post("/signup", upload.single("profile_pic"), (req, res, next) => {
   console.log(req.body);
 
   let password = req.body.pwd;
   let uname = req.body.uname;
-  let image = req.body.profile_pic;
+  image = req.file.filename;
   let email = req.body.email;
 
   connection.query(
@@ -62,16 +63,39 @@ app.post("/signup", (req, res) => {
     }
   );
 
-  // connection.query(
-  //   `SELECT image FROM users WHERE email = ?`,
-  //   [email],
-  //   (err, result) => {
-  //     if (err) console.log("err found:", err);
-  //     console.log(result[0].image.toString());
-  //   }
-  // );
+  connection.query(
+    `SELECT image FROM users WHERE email = ?`,
+    [email],
+    async (err, result) => {
+      if (err) console.log("err found:", err);
+      // console.log(result[0].image.toString());
 
-  res.render("user.ejs", { password, uname, email, image });
+      image = path.join("images", "uploads", result[0].image.toString());
+
+      console.log(image);
+      res.render("user.ejs", { password, uname, email, image });
+    }
+  );
+});
+
+app.post("/update", (req, res) => {
+  console.log(req.body);
+
+  let email = req.body.email;
+  let password = req.body.pwd;
+  let uname = req.body.uname;
+
+  connection.query(
+    `UPDATE users SET  username = ? , password = ? WHERE email = ? `,
+    [email, uname, password],
+    [email],
+    (err, result) => {
+      if (err) console.log("error found:", err);
+      console.log(result);
+
+      res.render("user.ejs", { email, password, uname, image });
+    }
+  );
 });
 
 app.listen(PORT, () => {
