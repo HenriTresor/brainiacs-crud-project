@@ -1,6 +1,19 @@
 const express = require("express");
 const path = require("path");
 const mysql2 = require("mysql2");
+const multer = require("multer");
+const { diskStorage } = require("multer");
+
+const storage = diskStorage({
+  destination: function (req, file, cb) {
+    cb(null,'public/images/uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null,originalname)
+  }
+})
+
+const upload = multer({ storage })
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -31,6 +44,11 @@ app.get("/", (req, res) => {
   res.render("index.ejs");
 });
 
+app.post("/signup", upload.single("profile_pic"), (req, res,next) => {
+  console.log('image uploaded');
+  next()
+});
+
 app.post("/signup", (req, res) => {
   console.log(req.body);
 
@@ -53,7 +71,10 @@ app.post("/signup", (req, res) => {
     [email],
     (err, result) => {
       if (err) console.log("err found:", err);
-      console.log(result);
+      console.log(result[0].image.toString());
+      if (image === result[0].image.toString()) {
+        image = storage.filename
+      }
     }
   );
 
