@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 });
 
 
-app.post("/user", (req, res) => {
+app.post("/signup", (req, res) => {
   console.log(req.body);
 
   let password = req.body.pwd;
@@ -62,14 +62,14 @@ app.post("/user", (req, res) => {
     }
   );
 
-  connection.query(
-    `SELECT image FROM users WHERE email = ?`,
-    [email],
-    (err, result) => {
-      if (err) console.log("err found:", err);
-      console.log(result[0].image.toString());
-    }
-  );
+  // connection.query(
+  //   `SELECT image FROM users WHERE email = ?`,
+  //   [email],
+  //   (err, result) => {
+  //     if (err) console.log("err found:", err);
+  //     console.log(result[0].image.toString());
+  //   }
+  // );
 
   res.render("user.ejs", { password, uname, email, image });
 });
