@@ -9,6 +9,7 @@
 <body>
 
   <main>
+    <h1>Create Account</h1>
 
     <form action="signup" method="post" enctype="multipart/form-data">
 
@@ -25,7 +26,7 @@
         <input type="password" name="pwd" id="pwd">
       </div>
         <div class="input__container">
-          <label for="pic">Upload profile picture</label>
+          <label for="pic" id="piclabel">Upload profile pic</label>
           <input type="file" name="profile_pic" id="pic">
         </div>
       <div class="input__container">
@@ -34,5 +35,14 @@
     </form>
   </main>
 </body>
+
+<script>
+  let fileInput = document.querySelector('#pic');
+  fileInput.addEventListener('change',()=>{
+    let filename = fileInput.value.split("\\").pop()
+    
+    document.querySelector("#piclabel").innerHTML = filename;
+  })
+</script>
 
 </html>

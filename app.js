@@ -16,7 +16,7 @@ const storage = diskStorage({
 const upload = multer({ storage });
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5500;
 
 // setup mysql server
 
@@ -78,25 +78,35 @@ app.post("/signup", upload.single("profile_pic"), (req, res, next) => {
   );
 });
 
-app.post("/update", (req, res) => {
+app.get("/login", (req, res) => {
+  res.render("login_page");
+});
+
+app.post("/login_post", (req, res) => {
   console.log(req.body);
 
-  let email = req.body.email;
+  let uname = req.body.username;
   let password = req.body.pwd;
-  let uname = req.body.uname;
+  let sql = `SELECT * FROM users WHERE username = ? AND password = ? `;
 
-  connection.query(
-    `UPDATE users SET  username = ? , password = ? WHERE email = ? `,
-    [email, uname, password],
-    [email],
-    (err, result) => {
-      if (err) console.log("error found:", err);
-      console.log(result);
+  connection.query(sql, [uname, password], (err, result) => {
+    if (err) console.log(err);
+    console.log(result);
 
-      res.render("user.ejs", { email, password, uname, image });
+    if (result == "") {
+      res.render("login_page");
+      return false;
+    } else {
+      let email = result[0].email;
+      let image = path.join("images", "uploads", result[0].image.toString());
+      res.render("user", { password, uname, email, image });
     }
-  );
+  });
 });
+
+app.post('/update_user', (req, res) => {
+  res.render(req.body)
+})
 
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
