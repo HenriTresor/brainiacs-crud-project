@@ -2,8 +2,9 @@
 <html>
 
 <head>
-  <title></title>
+  <title>Create Account</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -33,6 +34,9 @@
         <input type="submit" value="Submit" onclick="validate()">
       </div>
     </form>
+
+    <h1>Or</h1>
+    <button class="login_btn">Login</button>
   </main>
 </body>
 
@@ -52,6 +56,12 @@
           return false;
         }
       }
+
+      let login_btn = document.querySelector('.login_btn')
+      login_btn.addEventListener('click',()=>{
+
+        window.location.pathname = 'login'
+      })
 </script>
 
 </html>

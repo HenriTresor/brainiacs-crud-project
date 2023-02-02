@@ -17,7 +17,7 @@ const storage = diskStorage({
 const upload = multer({ storage });
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 6060;
 
 // setup mysql server
 
@@ -138,6 +138,16 @@ app.get('/deleteaccount/:id', (req, res) => {
   let sql = `DELETE FROM users WHERE id = ?`
   connection.query(sql, [id], (err, result) => {
     if (err) console.log(err);
+
+        let sql2 = `SELECT * FROM users where id = ?`;
+        connection.query(sql2, [req.params.id], (err, result) => {
+          if (err) console.log(err);
+          if (result == []) {
+            connnection.query(`TRUNCATE TABLE users`, (err, result) => {
+              if (err) console.log("err found:", err);
+            });
+          }
+        });
     res.redirect('/')
   })
 })

@@ -20,7 +20,7 @@ main{
     padding: 20px;
     color: whitesmoke;
     border-radius: 10px;
-    box-shadow: 0px 0px 20px black;
+    box-shadow: 0px 0px 40px grey;
 }
 
 main form{
@@ -117,4 +117,14 @@ i{
   outline: 2px solid red;
   color: red;
   background: white;
+}
+
+.login_btn{
+
+  padding:10px;
+  background:none;
+  outline:1px solid black;
+  border:none;
+  cursor:pointer;
+  margin :10px 10px 0 0;
 }
