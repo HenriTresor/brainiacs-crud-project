@@ -16,7 +16,7 @@ const storage = diskStorage({
 const upload = multer({ storage });
 
 const app = express();
-const PORT = process.env.PORT || 5500;
+const PORT = process.env.PORT || 5050;
 
 // setup mysql server
 
@@ -29,7 +29,9 @@ const connection = mysql2.createConnection({
 
 connection.connect((err) => {
   if (err) console.log("error found," + err);
-  console.log("connected to db successfully");
+  else {
+    console.log("connected to db successfully");
+  }
 });
 
 // view engine setup
@@ -64,16 +66,17 @@ app.post("/signup", upload.single("profile_pic"), (req, res, next) => {
   );
 
   connection.query(
-    `SELECT image FROM users WHERE email = ?`,
+    `SELECT * FROM users WHERE email = ?`,
     [email],
     async (err, result) => {
       if (err) console.log("err found:", err);
       // console.log(result[0].image.toString());
 
       image = path.join("images", "uploads", result[0].image.toString());
+      let id = result[0].id;
 
       console.log(image);
-      res.render("user.ejs", { password, uname, email, image });
+      res.render("user.ejs", { password, uname, email,id, image });
     }
   );
 });
@@ -87,25 +90,55 @@ app.post("/login_post", (req, res) => {
 
   let uname = req.body.username;
   let password = req.body.pwd;
+
   let sql = `SELECT * FROM users WHERE username = ? AND password = ? `;
 
-  connection.query(sql, [uname, password], (err, result) => {
+  connection.query(sql, [uname, password], async (err, result) => {
     if (err) console.log(err);
+
     console.log(result);
+    let id = await result[0].id;
+
+    console.log("the id is," + id);
 
     if (result == "") {
-      res.render("login_page");
-      return false;
+      return res.status(402).render("login_page");
     } else {
       let email = result[0].email;
       let image = path.join("images", "uploads", result[0].image.toString());
-      res.render("user", { password, uname, email, image });
+      res.render("user", { password, uname, email, image,id });
     }
   });
 });
 
-app.post('/update_user', (req, res) => {
-  res.render(req.body)
+app.post('/update_user/:id', (req, res) => {
+  let id = req.params.id
+  console.log(id);
+
+  console.log(req.body);
+  let uname = req.body.uname
+  let password = req.body.pwd
+  let email = req.body.email
+  let image = req.body.image
+
+  let sql = `UPDATE users SET username = ?,email = ?,password = ? WHERE id = ?`
+
+  connection.query(sql, [uname, email, password, id], (err, result) => {
+    if (err) console.log('error found:', err);
+    
+    req.url = ``
+    res.redirect(`http://localhost:${PORT}/login`)
+  })
+})
+
+app.get('/deleteaccount/:id', (req, res) => {
+
+  let id = req.params.id
+  let sql = `DELETE FROM users WHERE id = ?`
+  connection.query(sql, [id], (err, result) => {
+    if (err) console.log(err);
+    res.redirect('/')
+  })
 })
 
 app.listen(PORT, () => {

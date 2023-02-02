@@ -15,34 +15,43 @@
 
       <div class="input__container">
         <label for="email">Enter your email:</label>
-        <input type="email" name="email" id="email">
+        <input type="email" name="email" id="email" required>
       </div>
       <div class="input__container">
         <label for="uname">Create username:</label>
-        <input type="text" name="uname" id="uname">
+        <input type="text" name="uname" id="uname" required>
       </div>
       <div class="input__container">
         <label for="pwd">Create password:</label>
-        <input type="password" name="pwd" id="pwd">
+        <input type="password" name="pwd" id="pwd" required>
       </div>
         <div class="input__container">
           <label for="pic" id="piclabel">Upload profile pic</label>
-          <input type="file" name="profile_pic" id="pic">
+          <input type="file" name="profile_pic" id="pic" required>
         </div>
       <div class="input__container">
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" onclick="validate()">
       </div>
     </form>
   </main>
 </body>
 
 <script>
-  let fileInput = document.querySelector('#pic');
-  fileInput.addEventListener('change',()=>{
-    let filename = fileInput.value.split("\\").pop()
-    
-    document.querySelector("#piclabel").innerHTML = filename;
-  })
+
+    let inputFile = document.querySelector('#pic');
+    inputFile.addEventListener('change', () => {
+      let filename = inputFile.value.split('\\').pop()
+      document.querySelector("#piclabel").innerHTML = filename + `<i class="fa fa-check"></i>`;
+      document.querySelector('#piclabel').style.backgroundColor = 'black'
+      document.querySelector('#piclabel').style.color = 'white'
+    })
+
+    const validate = () => {
+        if(inputFile.value == ''){
+          alert('you must choose a photo')
+          return false;
+        }
+      }
 </script>
 
 </html>
