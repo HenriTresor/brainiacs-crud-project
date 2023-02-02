@@ -1,3 +1,4 @@
+
 const express = require("express");
 const path = require("path");
 const mysql2 = require("mysql2");
@@ -143,4 +144,5 @@ app.get('/deleteaccount/:id', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
+
 });
