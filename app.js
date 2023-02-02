@@ -16,7 +16,7 @@ const storage = diskStorage({
 const upload = multer({ storage });
 
 const app = express();
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT || 8080;
 
 // setup mysql server
 
